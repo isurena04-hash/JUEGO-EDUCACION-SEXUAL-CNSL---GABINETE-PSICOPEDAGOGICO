@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SEXUALIDAD: Decidir hoy, construir mañana</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbf4e6;--panel:#fff;--ink:#2b2a33;--line:#d9cdb4;--red:#d62828;--redbg:#fde3e1;--accent:#1b6ca8;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(circle at 6% 14%,rgba(27,108,168,.16) 0 70px,transparent 71px),
+    radial-gradient(circle at 94% 12%,rgba(233,30,140,.14) 0 90px,transparent 91px),
+    radial-gradient(circle at 90% 92%,rgba(46,158,68,.15) 0 80px,transparent 81px),
+    radial-gradient(circle at 4% 90%,rgba(242,183,5,.22) 0 95px,transparent 96px),
+    radial-gradient(rgba(43,42,51,.07) 1.5px,transparent 1.5px);
+  background-size:auto,auto,auto,auto,22px 22px;
+  color:var(--ink);font-family:'Fredoka','Trebuchet MS',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;padding:12px 18px;min-height:600px;overflow-x:auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.titulo{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.badge{background:linear-gradient(135deg,#e91e8c,#8e44ad);color:#fff;font-weight:700;font-size:clamp(18px,2.6vw,34px);letter-spacing:2px;padding:4px 20px;border-radius:999px;border-bottom:5px solid #5e2a78;box-shadow:0 4px 0 rgba(0,0,0,.12);transform:rotate(-2deg)}
+h1{margin:0;font-size:clamp(22px,3vw,40px);letter-spacing:.5px;color:var(--ink)}
+h1 em{font-style:normal;color:var(--accent)}
+.ctrl{display:flex;gap:10px;align-items:center;font-size:15px}
+select,button{font:inherit;color:var(--ink);background:var(--panel);border:2px solid var(--line);border-bottom-width:4px;border-radius:10px;padding:6px 12px;cursor:pointer}
+button:hover,select:hover{border-color:var(--accent)}
+button:active{transform:translateY(2px);border-bottom-width:2px}
+button:focus-visible,select:focus-visible,.cell:focus-visible,.team:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* Marco del tablero */
+.frame{flex:1;min-height:0;min-width:900px;display:flex;padding:10px;border-radius:22px;background:linear-gradient(135deg,#ffe9a8,#ffd1e3 50%,#cfe8ff);border:3px solid #fff;box-shadow:0 0 0 3px var(--line),0 8px 0 rgba(43,42,51,.14)}
+#board{flex:1;min-height:0;display:grid;grid-template-columns:1.3fr repeat(17,1fr);grid-template-rows:repeat(4,1fr);gap:6px;background:rgba(255,255,255,.55);padding:8px;border-radius:14px}
+
+.cell{--t:#cfe8ff;--tb:#8cbfe9;position:relative;background:linear-gradient(180deg,#fff -20%,var(--t) 120%);border:2px solid var(--tb);border-bottom-width:5px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:4px 2px;cursor:pointer;min-width:0;overflow:hidden;transition:transform .12s}
+.cell:nth-child(5n+2){--t:#cfe8ff;--tb:#8cbfe9}
+.cell:nth-child(5n+3){--t:#d6f3cf;--tb:#8fcf84}
+.cell:nth-child(5n+4){--t:#fff0b3;--tb:#e6c34a}
+.cell:nth-child(5n+5){--t:#ffd6ea;--tb:#ec93c0}
+.cell:nth-child(5n+6){--t:#e4d9ff;--tb:#b49be8}
+.cell::before{content:"";position:absolute;left:-8px;top:-8px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.55);pointer-events:none}
+.cell:hover{transform:translateY(-2px);border-color:var(--accent)}
+.num{position:relative;font-weight:700;font-size:clamp(14px,1.9vw,26px);line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.8)}
+
+/* Casillas rojas (atajos) */
+.cell.red{background:repeating-linear-gradient(135deg,#fff1ef 0 8px,var(--redbg) 8px 16px);border-color:var(--red)}
+.cell.red::before{display:none}
+.cell.red .num{color:var(--red)}
+.go{position:relative;width:100%;display:flex;flex-direction:column;align-items:center;gap:1px;color:var(--red);text-align:center;line-height:1}
+.go .av{font-size:clamp(8px,.85vw,12px);font-weight:600;line-height:1.05;white-space:nowrap}
+.go b{display:block;font-size:clamp(15px,1.7vw,24px);line-height:1}
+
+.start,.goal{align-items:center;justify-content:center;gap:4px;text-align:center}
+.start{grid-column:1;grid-row:1/5;background:linear-gradient(180deg,#f1fbef,#bfe8b9);border-color:#4fa24a;color:#1d4d1a}
+.goal{background:radial-gradient(circle at 50% 30%,#fff9d6,#ffe27a);border-color:#e0a800;color:#5c4400}
+.start::before,.goal::before{display:none}
+.start .num,.goal .num{font-size:clamp(14px,1.6vw,22px)}
+.deco{font-size:clamp(18px,2.4vw,34px);line-height:1}
+.tokens{position:relative;display:flex;flex-wrap:wrap;gap:3px;justify-content:center;align-content:center;flex:1;width:100%}
+.start .tokens{flex:0 0 auto}
+.tk{width:clamp(18px,2.2vw,30px);height:clamp(18px,2.2vw,30px);border-radius:50%;border:3px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.35),0 1px 6px rgba(0,0,0,.35);display:grid;place-items:center;font-size:clamp(9px,1vw,14px);font-weight:700;color:#fff;text-shadow:0 0 2px #000}
+
+#teams{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.team{display:flex;align-items:center;gap:8px;background:var(--panel);border:3px solid var(--line);border-bottom-width:5px;border-radius:14px;padding:6px 14px;cursor:pointer;min-width:130px}
+.team.sel{border-color:var(--ink);box-shadow:0 0 0 3px var(--accent)}
+.team .tk{flex:none;width:30px;height:30px;font-size:14px}
+.team small{display:block;opacity:.7;font-size:12px}
+.hint{text-align:center;font-size:13px;opacity:.75;margin:0}
+</style>
+</head>
+<body>
+<header>
+  <div class="titulo">
+    <span class="badge">SEXUALIDAD</span>
+    <h1>Decidir hoy, <em>construir mañana</em></h1>
+  </div>
+  <div class="ctrl">
+    <label>Equipos <select id="n"><option>5</option><option>6</option><option>7</option><option>8</option></select></label>
+    <button id="reset">Reiniciar fichas</button>
+  </div>
+</header>
+<div class="frame"><div id="board"></div></div>
+<div id="teams"></div>
+<p class="hint">Elige un equipo abajo y toca la casilla donde debe quedar su ficha. Toca «Salida» para devolverla al inicio.</p>
+<script>
+const RED={5:9,11:17,16:19,18:22,23:26,45:48,47:52,51:56,54:62,63:67};
+const COLORS=[["Rojo","#e53935"],["Azul","#1e66d0"],["Verde","#2e9e44"],["Amarillo","#f2b705"],["Naranja","#f57c00"],["Morado","#8e44ad"],["Rosa","#e91e8c"],["Celeste","#00a8c6"]];
+let n=5,sel=0,pos=Array(8).fill(0);
+const board=document.getElementById('board'),teamsEl=document.getElementById('teams');
+function place(i){ // fila/columna serpenteante 17x4
+  const r=Math.floor((i-1)/17),c=(i-1)%17;
+  return {row:r+1,col:(r%2===0?c:16-c)+2};
+}
+function tk(t){return `<span class="tk" style="background:${COLORS[t][1]}">${t+1}</span>`}
+function render(){
+  let h=`<div class="cell start" data-p="0"><div class="deco">🚩</div><div class="num">SALIDA</div><div class="tokens">${[...Array(n).keys()].filter(t=>pos[t]==0).map(tk).join('')}</div></div>`;
+  for(let i=1;i<=68;i++){
+    const {row,col}=place(i),g=RED[i],tokens=[...Array(n).keys()].filter(t=>pos[t]==i).map(tk).join('');
+    const label=i==68?'<div class="deco">🏆</div><div class="num">68 · META</div>':g?`<div class="go"><span class="num">${i}</span><span class="av">Avanza<br>a la</span><b>${g}</b></div>`:`<div class="num">${i}</div>`;
+    h+=`<div class="cell ${g?'red':''} ${i==68?'goal':''}" data-p="${i}" style="grid-row:${row};grid-column:${col}">${label}<div class="tokens">${tokens}</div></div>`;
+  }
+  board.innerHTML=h;
+  teamsEl.innerHTML=[...Array(n).keys()].map(t=>`<div class="team ${t==sel?'sel':''}" data-t="${t}">${tk(t)}<div>${COLORS[t][0]}<small>${pos[t]?'Casilla '+pos[t]:'En salida'}</small></div></div>`).join('');
+}
+board.onclick=e=>{const c=e.target.closest('.cell');if(!c)return;pos[sel]=+c.dataset.p;render()};
+teamsEl.onclick=e=>{const t=e.target.closest('.team');if(!t)return;sel=+t.dataset.t;render()};
+document.getElementById('n').onchange=e=>{n=+e.target.value;if(sel>=n)sel=0;render()};
+document.getElementById('reset').onclick=()=>{pos=Array(8).fill(0);sel=0;render()};
+render();
+</script>
+</body>
+</html>
